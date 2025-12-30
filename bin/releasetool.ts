@@ -51,7 +51,7 @@ const parser = yargs(hideBin(process.argv))
         demandOption: true,
         type: "string",
       })
-      .option("version", {
+      .option("package-version", {
         describe: "version string in the form v0.0.1",
         requiresArg: true,
         demandOption: true,
@@ -59,7 +59,7 @@ const parser = yargs(hideBin(process.argv))
       });
   }, async (args) => {
     const packageJsonPath = args["package-json"];
-    const versionString = args.version;
+    const versionString = args["package-version"];
 
     if (!versionString.startsWith("v")) {
       throw new Error(`version string must start with 'v', got "${versionString}"`);
