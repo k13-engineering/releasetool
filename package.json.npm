@@ -1,7 +1,6 @@
 {
   "name": "@k13engineering/releasetool",
   "type": "module",
-  "version": "0.0.1",
   "description": "npm Release Tool",
   "files": [
     "dist"
