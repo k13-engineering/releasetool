@@ -1,5 +1,7 @@
 import nodeFs from "node:fs";
+import nodePath from "node:path";
 import yargs from "yargs";
+import { build } from "./build/builder.ts";
 import { formatError } from "./format-error.ts";
 import { mergePackageJson, patchPackageJsonVersion } from "./package-json.ts";
 
@@ -81,6 +83,64 @@ const addPatchVersionCommand = ({ parser }: { parser: Argv }) => {
   });
 };
 
+const singleValueBuildOptions = ["root", "out", "tsconfig"];
+
+const assertSingleValues = ({ args }: { args: Record<string, unknown> }) => {
+  const repeated = singleValueBuildOptions.filter((option) => {
+    return Array.isArray(args[option]);
+  });
+
+  if (repeated.length > 0) {
+    throw Error(`option --${repeated[0]} must only be given once`);
+  }
+
+  return true;
+};
+
+const addBuildCommand = ({ parser, stdout }: { parser: Argv, stdout: TOutputFunction }) => {
+  return parser.command("build", "build TypeScript project, preserving positions of code", (y) => {
+    return y
+      .option("root", {
+        describe: "root directory of the project, the directory structure below is kept in the output",
+        requiresArg: true,
+        default: ".",
+        type: "string",
+      })
+      .option("out", {
+        describe: "output directory",
+        requiresArg: true,
+        demandOption: true,
+        type: "string",
+      })
+      .option("entry", {
+        describe: "entry file, can be given multiple times",
+        requiresArg: true,
+        demandOption: true,
+        array: true,
+        type: "string",
+      })
+      .option("tsconfig", {
+        describe: "tsconfig used for generating declarations, defaults to tsconfig.json in the root directory",
+        requiresArg: true,
+        type: "string",
+      })
+      .check((args) => {
+        return assertSingleValues({ args });
+      });
+  }, async (args) => {
+    const { files } = await build({
+      rootDirectory: args.root,
+      outputDirectory: args.out,
+      entryPoints: args.entry.map((entry) => {
+        return nodePath.resolve(entry);
+      }),
+      tsconfigPath: args.tsconfig === undefined ? undefined : nodePath.resolve(args.tsconfig),
+    });
+
+    stdout(`built ${files.length} file${files.length === 1 ? "" : "s"} into "${args.out}"`);
+  });
+};
+
 const runCli = async ({
   args,
   stdout,
@@ -100,7 +160,10 @@ const runCli = async ({
       throw error ?? Error(message);
     });
 
-  const parser = addPatchVersionCommand({ parser: addMergeCommand({ parser: baseParser }) })
+  const parser = addBuildCommand({
+    parser: addPatchVersionCommand({ parser: addMergeCommand({ parser: baseParser }) }),
+    stdout
+  })
     .demandCommand(1, "You must specify a command")
     .strict();
 

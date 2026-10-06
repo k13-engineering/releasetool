@@ -5,9 +5,11 @@ import * as releasetool from "./index.ts";
 describe("index", () => {
   it("should export the public interface", () => {
     assert.deepStrictEqual(Object.keys(releasetool).toSorted(), [
+      "build",
       "mergePackageJson",
       "patchPackageJsonVersion",
-      "runCli"
+      "runCli",
+      "stripTypes"
     ]);
   });
 });
