@@ -4,7 +4,7 @@ const mergePackageJson = ({
 }: {
   localPackageJson: Record<string, unknown>,
   npmPackageJson: Record<string, unknown>
-}) => {
+}): Record<string, unknown> => {
 
   const merged = {
     ...localPackageJson,

@@ -62,7 +62,7 @@ const parser = yargs(hideBin(process.argv))
     const versionString = args["package-version"];
 
     if (!versionString.startsWith("v")) {
-      throw new Error(`version string must start with 'v', got "${versionString}"`);
+      throw Error(`version string must start with 'v', got "${versionString}"`);
     }
 
     // Remove 'v' prefix if present

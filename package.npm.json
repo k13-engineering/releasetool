@@ -2,6 +2,9 @@
   "name": "@k13engineering/releasetool",
   "type": "module",
   "description": "npm Release Tool",
+  "publishConfig": {
+    "access": "public"
+  },
   "files": [
     "dist"
   ],
@@ -19,6 +22,5 @@
   "bugs": {
     "url": "https://github.com/k13-engineering/releasetool/issues"
   },
-  "homepage": "https://github.com/k13-engineering/releasetool#readme",
-  "devDependencies": {}
+  "homepage": "https://github.com/k13-engineering/releasetool#readme"
 }

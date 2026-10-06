@@ -6,16 +6,23 @@
   "main": "lib/index.ts",
   "scripts": {
     "build": "rm -rf dist/ && deno-node-build --root . --out dist/ --entry bin/releasetool.ts",
-    "test": "true",
-    "lint": "eslint ."
+    "type-check": "tsc --noEmit",
+    "test": "c8 --100 --reporter lcov --reporter html --reporter text --all --src lib/ --exclude 'lib/**/*.spec.ts' mocha 'lib/**/*.spec.ts'",
+    "lint": "eslint .",
+    "update-deps": "npm-check-updates -u"
   },
   "devDependencies": {
-    "@eslint/js": "^9.25.1",
-    "@types/node": "^22.14.1",
+    "@eslint/js": "^10.0.1",
+    "@k13engineering/eslint-rules": "^0.0.6",
+    "@k13engineering/releasetool": "^0.0.5",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^25.6.0",
     "@types/yargs": "^17.0.33",
+    "c8": "^11.0.0",
     "deno-node": "^0.0.12",
-    "tsx": "^4.19.3",
-    "typescript-eslint": "^8.31.0"
+    "mocha": "^12.0.2",
+    "npm-check-updates": "^20.0.2",
+    "typescript": "^6.0.3"
   },
   "dependencies": {
     "yargs": "^17.7.2"
