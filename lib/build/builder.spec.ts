@@ -130,7 +130,7 @@ describe("build", () => {
         assert.throws(() => {
           module.fail({ message: "boom" });
         }, (error: Error) => {
-          assert.ok(error.stack?.includes(`${nodeUrl.pathToFileURL(outputFile).href}:3:9`), error.stack);
+          assert.ok(error.stack?.includes(`${nodeUrl.pathToFileURL(outputFile).href}:3:9`), error.stack ?? "");
           return true;
         });
       });
