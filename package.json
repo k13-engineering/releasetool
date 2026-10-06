@@ -5,7 +5,7 @@
   },
   "main": "lib/index.ts",
   "scripts": {
-    "build": "rm -rf dist/ && deno-node-build --root . --out dist/ --entry bin/releasetool.ts",
+    "build": "rm -rf dist/ && deno-node-build --root . --out dist/ --entry lib/index.ts --entry bin/releasetool.ts",
     "type-check": "tsc --noEmit",
     "test": "c8 --100 --reporter lcov --reporter html --reporter text --all --src lib/ --exclude 'lib/**/*.spec.ts' mocha 'lib/**/*.spec.ts'",
     "lint": "eslint .",
