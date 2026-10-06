@@ -1,5 +1,8 @@
 # releasetool
 
+[![CI](https://github.com/k13-engineering/releasetool/actions/workflows/ci.yml/badge.svg)](https://github.com/k13-engineering/releasetool/actions/workflows/ci.yml)
+[![npm](https://img.shields.io/npm/v/@k13engineering/releasetool)](https://www.npmjs.com/package/@k13engineering/releasetool)
+
 Tooling for building and releasing TypeScript packages to npm.
 
 - **build**: builds a TypeScript project to JavaScript and declaration
@@ -12,6 +15,8 @@ Tooling for building and releasing TypeScript packages to npm.
 ```sh
 npm install --save-dev @k13engineering/releasetool
 ```
+
+Requires Node.js 20 or newer.
 
 ## Building
 
@@ -81,6 +86,21 @@ releasetool patch-version --package-json package.json --package-version v1.2.3
 precedence. `patch-version` expects the version with a `v` prefix, as in git
 tags.
 
+This separates development from publishing: `package.json` points `main` and
+`bin` to the TypeScript sources, so the package can be run and tested
+directly with Node.js, while `package.npm.json` holds the package metadata and
+points to the built files in `dist/`.
+
+A GitHub workflow publishing on every pushed tag:
+
+```yaml
+- run: npm ci
+- run: npm run build # e.g. releasetool build --out dist/ --entry lib/index.ts
+- run: node node_modules/.bin/releasetool merge --local-package-json package.json --npm-package-json package.npm.json --output package.json
+- run: node node_modules/.bin/releasetool patch-version --package-json package.json --package-version ${{ github.ref_name }}
+- run: npm publish
+```
+
 ## Usage from code
 
 ```ts
@@ -108,3 +128,20 @@ const { exitCode } = await runCli({
 ```
 
 All functions throw on errors.
+
+## Development
+
+```sh
+npm ci
+npm run build       # builds releasetool with itself
+npm run type-check
+npm test            # requires 100% coverage
+npm run lint
+```
+
+The project follows
+[node-boilerplate](https://github.com/k13-engineering/node-boilerplate).
+
+## License
+
+[LGPL-2.1-only](LICENSE)

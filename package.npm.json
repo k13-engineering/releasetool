@@ -1,7 +1,7 @@
 {
   "name": "@k13engineering/releasetool",
   "type": "module",
-  "description": "npm Release Tool",
+  "description": "Build and release tooling for TypeScript npm packages: position-preserving builds with per-file declarations, package.json merging and versioning",
   "publishConfig": {
     "access": "public"
   },
@@ -9,16 +9,29 @@
     "dist"
   ],
   "main": "dist/lib/index.js",
+  "types": "dist/lib/index.d.ts",
   "bin": {
     "releasetool": "dist/bin/releasetool.js"
+  },
+  "engines": {
+    "node": ">=20"
   },
   "scripts": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/k13-engineering/releasetool.git"
   },
+  "keywords": [
+    "typescript",
+    "build",
+    "type-stripping",
+    "declarations",
+    "npm",
+    "release",
+    "ts-blank-space"
+  ],
   "author": "Simon Kadisch",
-  "license": "LGPL-v2.1-only",
+  "license": "LGPL-2.1-only",
   "bugs": {
     "url": "https://github.com/k13-engineering/releasetool/issues"
   },
